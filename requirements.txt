@@ -5,3 +5,6 @@ pandas
 whois
 scikit-learn
 pycountry
+beautifulsoup4
+seaborn
+requests
