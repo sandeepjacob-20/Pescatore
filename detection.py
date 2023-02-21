@@ -9,7 +9,7 @@ import pandas as pd
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
     
-    urldata = pd.read_csv(r"E:\pescatore\urldata.csv")
+    urldata = pd.read_csv('gs://urldatabase/urldata.csv')
     for i in range(1, len(urldata)):
       if domain_name in str(urldata['Domain'][i]):
         return 1
@@ -19,9 +19,6 @@ def databaseCheck(domain_name):
 def check(url):
 
     features = [] 
-
-    urldata = open(r"E:\pescatore\urldata.csv", "a", newline='')
-    writer = csv.writer(urldata)
 
     #extracts the features of the url
     features.append(fe.featureExtraction(url))
@@ -58,10 +55,12 @@ def check(url):
         country_name = "unavailable"
 
     if result==0:
-        if doesExist == 0: #if domain name not in the dataset, adds it to the dataset
+        if doesExist == 0:
             features[0].insert(0,domain_name)
             features[0].insert(11,result[0])
-            writer.writerow(features[0])
+            df = pd.DataFrame(features)
+            #if domain name not in the dataset, adds it to the dataset
+            df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
 
         #returns the result to the api 
         return {"result":"safe",
@@ -71,9 +70,12 @@ def check(url):
 
     elif result==1:
         if doesExist == 0:  #if domain name not in the dataset, adds it to the dataset
-            features[0].insert(0,domain_name)
-            features[0].insert(11,result[0])
-            writer.writerow(features[0])
+            features[0].insert(0, domain_name)
+            features[0].insert(11, result[0])
+            df = pd.DataFrame(features)
+            #if domain name not in the dataset, adds it to the dataset
+            df.to_csv('gs://urldatabase/urldata.csv',
+                      mode='a', index=False, header=False)
 
         #returns the result to the api 
         return {"result":"Unsafe",

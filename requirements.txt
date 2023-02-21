@@ -8,3 +8,5 @@ pycountry
 beautifulsoup4
 seaborn
 requests
+fsspec
+gcsfs
