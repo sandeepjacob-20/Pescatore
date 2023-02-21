@@ -30,10 +30,10 @@ def check(url):
 
     #extracts the details of the url
     try:
-        site_data = whois.whois(urlparse(url).netloc)
+        site_data = whois.query(urlparse(url).netloc)
 
         try:
-            domain_name = site_data.domain_name
+            domain_name = site_data.name
             if(type(domain_name) is list ):
                 domain_name=domain_name[1].lower()
             if domain_name.isupper():

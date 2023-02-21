@@ -104,7 +104,7 @@ def web_traffic(url_in):
   try:
     if 'http' not in url_in and 'https' not in url_in:
       url_in='http://'+url_in
-    domain_name = whois.whois(urlparse(url_in).netloc).domain_name
+    domain_name = whois.query(urlparse(url_in).netloc).name
     if(type(domain_name) is list ):
       domain_name=domain_name[1].lower()
     if domain_name.isupper():
@@ -158,7 +158,7 @@ def featureExtraction(url):
   v = web_traffic(url)
   dns = 0
   try:
-    domain_name = whois.whois(urlparse(url).netloc)
+    domain_name = whois.query(urlparse(url).netloc)
   except:
     dns = 1
   
