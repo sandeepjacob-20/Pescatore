@@ -1,7 +1,6 @@
 #import required packages and modules
 from fastapi import FastAPI
 import detection as detect
-from urllib.parse import unquote
 import training as train
 
 app = FastAPI()
