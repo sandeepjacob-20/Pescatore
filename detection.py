@@ -3,25 +3,12 @@ import feature_extraction as fe
 import whois
 from urllib.parse import urlparse
 import pycountry
-import csv
-import pandas as pd
 
 #To check if the domain name already exists in the training dataset
-def databaseCheck(domain_name):
-    
-    urldata = pd.read_csv("urldata.csv")
-    for i in range(1, len(urldata)):
-      if domain_name in str(urldata['Domain'][i]):
-        return 1
-    
-    return 0
 
 def check(url):
 
     features = [] 
-
-    urldata = open("urldata.csv","a",newline = '')
-    writer = csv.writer(urldata)
 
     #extracts the features of the url
     features.append(fe.featureExtraction(url))
@@ -41,10 +28,8 @@ def check(url):
             domain_name=domain_name[1].lower()
         if domain_name.isupper():
             domain_name=domain_name.lower()
-        doesExist = databaseCheck(domain_name) #checks if the domain name already exists in the training dataset.
     except:
         domain_name="none"
-        doesExist=1
 
     registrar = site_data.registrar
 
@@ -58,11 +43,6 @@ def check(url):
         country_name = "unavailable"
 
     if result==0:
-        if doesExist == 0: #if domain name not in the dataset, adds it to the dataset
-            features[0].insert(0,domain_name)
-            features[0].insert(11,result[0])
-            writer.writerow(features[0])
-
         #returns the result to the api 
         return {"result":"safe",
         "registrar":str(registrar),
@@ -70,11 +50,6 @@ def check(url):
         "country":country_name} 
 
     elif result==1:
-        if doesExist == 0:  #if domain name not in the dataset, adds it to the dataset
-            features[0].insert(0,domain_name)
-            features[0].insert(11,result[0])
-            writer.writerow(features[0])
-
         #returns the result to the api 
         return {"result":"Unsafe",
         "registrar":str(registrar),
