@@ -9,7 +9,7 @@ import pandas as pd
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
     
-    urldata = pd.read_csv("urldata.csv")
+    urldata = pd.read_csv(r"E:\pescatore\urldata.csv")
     for i in range(1, len(urldata)):
       if domain_name in str(urldata['Domain'][i]):
         return 1
@@ -20,7 +20,7 @@ def check(url):
 
     features = [] 
 
-    urldata = open("urldata.csv","a",newline = '')
+    urldata = open(r"E:\pescatore\urldata.csv", "a", newline='')
     writer = csv.writer(urldata)
 
     #extracts the features of the url

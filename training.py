@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 
 def train_model():
     #Loading the data
-    data0 = pd.read_csv('urldata.csv')
+    data0 = pd.read_csv(r'E:\pescatore\urldata.csv')
     data0.head()
 
     data0.shape
