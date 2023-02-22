@@ -10,3 +10,4 @@ seaborn
 requests
 fsspec
 gcsfs
+google-cloud-storage

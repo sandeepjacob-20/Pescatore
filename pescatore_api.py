@@ -12,7 +12,7 @@ def home():
 @app.get("/train")
 def root(key: str):
     if key == "lospolloshermanos":
-        return 0 #train.train_model()
+        return train.train_model()
     else:
         return {"Error":"Password incorrect"}
 

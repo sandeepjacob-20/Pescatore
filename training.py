@@ -12,12 +12,18 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
+from google.cloud import storage
 
 """Loading the data"""
 
 def train_model():
     #Loading the data
-    data0 = pd.read_csv(r'E:\pescatore\urldata.csv')
+    path_to_private_key = '/home/sandeepjacob1/thinking-league-377006-e318d34b7d2a.json'
+    client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
+    bucket = client.bucket('urldatabase')
+    blob = bucket.blob('urldata.csv')
+    blob.download_to_filename('urldata.csv')
+    data0 = pd.read_csv('urldata.csv')
     data0.head()
 
     data0.shape
