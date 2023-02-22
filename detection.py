@@ -20,7 +20,7 @@ def databaseCheck(domain_name):
 
 def check(url):
 
-    path_to_private_key = '/home/sandeepjacob1/thinking-league-377006-e318d34b7d2a.json'
+    path_to_private_key = './thinking-league-377006-e318d34b7d2a.json'
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('urldatabase')
     blob = bucket.blob('urldata.csv')
