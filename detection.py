@@ -24,7 +24,7 @@ def check(url):
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('urldatabase')
     blob = bucket.blob('urldata.csv')
-    file = open(r"./tmp","wb")
+    file = open(r"/tmp","wb")
     blob.download_to_file(file)
 
     features = [] 
@@ -69,12 +69,12 @@ def check(url):
             features[0].insert(11,result[0])
             # df = pd.DataFrame(features)
             #if domain name not in the dataset, adds it to the dataset
-            with open(r'./tmp/urldata.csv', 'a') as f:
+            with open(r'/tmp/urldata.csv', 'a') as f:
                 writer = csv.writer(f)
                 writer.writerow(features[0])
 
-            blob = bucket.blob(r"./tmp/urldata.csv")
-            blob.upload_from_filename(r"./tmp/urldata.csv")
+            blob = bucket.blob(r"/tmp/urldata.csv")
+            blob.upload_from_filename(r"/tmp/urldata.csv")
             # blob.upload_from_string(df.to_csv(), 'text/csv')
             # df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
 
