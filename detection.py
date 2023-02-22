@@ -24,7 +24,7 @@ def check(url):
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('urldatabase')
     blob = bucket.blob('urldata.csv')
-    file = open(r"/tmp","wb")
+    file = open(r"/tmp/urldata.csv","wb")
     blob.download_to_file(file)
 
     features = [] 
