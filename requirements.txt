@@ -2,7 +2,7 @@ fastapi
 uvicorn
 gunicorn
 pandas
-whois
+python-whois
 scikit-learn
 pycountry
 beautifulsoup4
