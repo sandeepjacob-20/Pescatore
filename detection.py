@@ -70,7 +70,7 @@ def check(url):
             #if domain name not in the dataset, adds it to the dataset
             with open(r'urldata.csv', 'a') as f:
                 writer = csv.writer(f)
-                writer.writerow(features)
+                writer.writerow(features[0])
 
             blob = bucket.blob("urldata.csv")
             blob.upload_from_filename("urldata.csv")
@@ -91,7 +91,7 @@ def check(url):
             #if domain name not in the dataset, adds it to the dataset
             with open(r'urldata.csv', 'a') as f:
                 writer = csv.writer(f)
-                writer.writerow(features)
+                writer.writerow(features[0])
 
             blob = bucket.blob("urldata.csv")
             blob.upload_from_filename("urldata.csv")
