@@ -4,6 +4,8 @@ import whois
 from urllib.parse import urlparse
 import pycountry
 import pandas as pd
+from google.cloud import storage
+
 
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
@@ -16,6 +18,11 @@ def databaseCheck(domain_name):
     return 0
 
 def check(url):
+
+    path_to_private_key = './thinking-league-377006-e318d34b7d2a.json'
+    client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
+    bucket = client.bucket('urldatabase')
+    blob = bucket.blob('urldata.csv')
 
     features = [] 
 
@@ -59,7 +66,8 @@ def check(url):
             features[0].insert(11,result[0])
             df = pd.DataFrame(features)
             #if domain name not in the dataset, adds it to the dataset
-            df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
+            blob.upload_from_string(df.to_csv(), 'text/csv')
+            # df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
 
         #returns the result to the api 
         return {"result":"safe",
@@ -73,8 +81,8 @@ def check(url):
             features[0].insert(11, result[0])
             df = pd.DataFrame(features)
             #if domain name not in the dataset, adds it to the dataset
-            df.to_csv('gs://urldatabase/urldata.csv',
-                      mode='a', index=False, header=False)
+            blob.upload_from_string(df.to_csv(), 'text/csv')
+            # df.to_csv('gs://urldatabase/urldata.csv',mode='a', index=False, header=False)
 
         #returns the result to the api 
         return {"result":"Unsafe",
