@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import pycountry
 import pandas as pd
 from google.cloud import storage
+import csv
 
 
 #To check if the domain name already exists in the training dataset
@@ -19,10 +20,11 @@ def databaseCheck(domain_name):
 
 def check(url):
 
-    path_to_private_key = './thinking-league-377006-e318d34b7d2a.json'
+    path_to_private_key = '/home/sandeepjacob1/thinking-league-377006-e318d34b7d2a.json'
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('urldatabase')
     blob = bucket.blob('urldata.csv')
+    blob.download_to_filename('urldata.csv')
 
     features = [] 
 
@@ -64,9 +66,15 @@ def check(url):
         if doesExist == 0:
             features[0].insert(0,domain_name)
             features[0].insert(11,result[0])
-            df = pd.DataFrame(features)
+            # df = pd.DataFrame(features)
             #if domain name not in the dataset, adds it to the dataset
-            blob.upload_from_string(df.to_csv(), 'text/csv')
+            with open(r'urldata.csv', 'a') as f:
+                writer = csv.writer(f)
+                writer.writerow(features)
+
+            blob = bucket.blob("urldata.csv")
+            blob.upload_from_filename("urldata.csv")
+            # blob.upload_from_string(df.to_csv(), 'text/csv')
             # df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
 
         #returns the result to the api 
@@ -81,7 +89,13 @@ def check(url):
             features[0].insert(11, result[0])
             df = pd.DataFrame(features)
             #if domain name not in the dataset, adds it to the dataset
-            blob.upload_from_string(df.to_csv(), 'text/csv')
+            with open(r'urldata.csv', 'a') as f:
+                writer = csv.writer(f)
+                writer.writerow(features)
+
+            blob = bucket.blob("urldata.csv")
+            blob.upload_from_filename("urldata.csv")
+            # blob.upload_from_string(df.to_csv(), 'text/csv')
             # df.to_csv('gs://urldatabase/urldata.csv',mode='a', index=False, header=False)
 
         #returns the result to the api 
