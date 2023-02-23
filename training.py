@@ -69,7 +69,7 @@ def train_model():
 
     # instantiate the model
     tree = DecisionTreeClassifier()
-    tree.fit(X_train.values,y_train)
+    tree.fit(X_train,y_train)
 
     #predicting the target value from the model for the samples
     y_test_tree = tree.predict(X_test)
@@ -92,7 +92,7 @@ def train_model():
     forest = RandomForestClassifier()
 
     # fit the model 
-    forest.fit(X_train.values, y_train)
+    forest.fit(X_train, y_train)
 
     #predicting the target value from the model for the samples
     y_test_forest = forest.predict(X_test)
@@ -115,7 +115,7 @@ def train_model():
     mlp = MLPClassifier(alpha=0.001, hidden_layer_sizes=([100, 100, 100]))
 
     # fit the model
-    mlp.fit(X_train.values, y_train)
+    mlp.fit(X_train, y_train)
 
     #predicting the target value from the model for the samples
     y_test_mlp = mlp.predict(X_test)
@@ -139,7 +139,7 @@ def train_model():
     # instantiate the model
     svm = SVC(kernel='linear', C=1.0, random_state=12)
     #fit the model
-    svm.fit(X_train.values, y_train)
+    svm.fit(X_train, y_train)
 
     #predicting the target value from the model for the samples
     y_test_svm = svm.predict(X_test)
@@ -157,7 +157,7 @@ def train_model():
     from sklearn.naive_bayes import MultinomialNB
 
     nb=MultinomialNB()
-    nb.fit(X_train.values,y_train)
+    nb.fit(X_train,y_train)
 
     #predicting the target value from the model for the samples
     y_test_nb = nb.predict(X_test)
@@ -177,7 +177,7 @@ def train_model():
     aB = AdaBoostClassifier(n_estimators=50,
                             learning_rate=1)
 
-    aB.fit(X_train.values, y_train)
+    aB.fit(X_train, y_train)
 
     #predicting the target value from the model for the samples
     y_test_aB = aB.predict(X_test)
@@ -199,7 +199,7 @@ def train_model():
 
     classifier = StackingClassifier(estimators=estimators, final_estimator=final_estimator)
 
-    classifier.fit(X_train.values, y_train)
+    classifier.fit(X_train, y_train)
 
     y_test_classifier = classifier.predict(X_test)
     y_train_classifier = classifier.predict(X_train)
