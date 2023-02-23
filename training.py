@@ -22,8 +22,9 @@ def train_model():
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('urldatabase')
     blob = bucket.blob('urldata.csv')
-    blob.download_to_filename('urldata.csv')
-    data0 = pd.read_csv('urldata.csv')
+    file = open(r"/tmp/urldata.csv","wb")
+    blob.download_to_file(file)
+    data0 = pd.read_csv(r'/tmp/urldata.csv')
     data0.head()
 
     data0.shape
