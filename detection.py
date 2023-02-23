@@ -14,9 +14,9 @@ def databaseCheck(domain_name):
     urldata = pd.read_csv('gs://pescatore_db/urldata.csv')
     for i in range(1, len(urldata)):
       if domain_name in str(urldata['Domain'][i]):
-        return 1
+        return urldata['Label'][i]  #if the domain does exist it returns the label
     
-    return 0
+    return 2 #if the domain does not exist it returns 2
 
 def check(url):
 
@@ -30,16 +30,22 @@ def check(url):
     modelblob = bucket.blob('phishing_model.pkl')
     model_file = open(r"/tmp/phishing_model.pkl","wb")
     modelblob.download_to_file(model_file)
-    features = [] 
 
-    #extracts the features of the url
-    features.append(fe.featureExtraction(url))
+    doesExist = databaseCheck(domain_name)
 
-    # loading the model to predict
-    loaded_model = pickle.load(open(r'/tmp/phishing_model.pkl', 'rb'))
+    if doesExist==2:
+        features = [] 
 
-    #prediction result is stored in the 'result' variable. 1 for malicious and 0 for benign
-    result = loaded_model.predict(features)
+        #extracts the features of the url
+        features.append(fe.featureExtraction(url))
+
+        # loading the model to predict
+        loaded_model = pickle.load(open(r'/tmp/phishing_model.pkl', 'rb'))
+
+        #prediction result is stored in the 'result' variable. 1 for malicious and 0 for benign
+        result = loaded_model.predict(features)
+    else:
+        result = doesExist
 
     #extracts the details of the url
     site_data = whois.whois(urlparse(url).netloc)
@@ -50,7 +56,7 @@ def check(url):
             domain_name=domain_name[1].lower()
         if domain_name.isupper():
             domain_name=domain_name.lower()
-        doesExist = databaseCheck(domain_name) #checks if the domain name already exists in the training dataset.
+         #checks if the domain name already exists in the training dataset.
     except:
         domain_name="none"
         doesExist=1
@@ -67,7 +73,7 @@ def check(url):
         country_name = "unavailable"
 
     if result==0:
-        if doesExist == 0:
+        if doesExist == 2:
             features[0].insert(0,domain_name)
             features[0].insert(11,result[0])
             # df = pd.DataFrame(features)
@@ -86,7 +92,7 @@ def check(url):
         "country":country_name} 
 
     elif result==1:
-        if doesExist == 0:  #if domain name not in the dataset, adds it to the dataset
+        if doesExist == 2:  #if domain name not in the dataset, adds it to the dataset
             features[0].insert(0, domain_name)
             features[0].insert(11, result[0])
             df = pd.DataFrame(features)
