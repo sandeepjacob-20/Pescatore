@@ -25,9 +25,8 @@ def train_model():
     file = open(r"/tmp/urldata.csv","wb")
     blob.download_to_file(file)
     data0 = pd.read_csv(r'/tmp/urldata.csv')
-    data0.head()
 
-    data0.shape
+    data0.head()
 
     """Data Preprocessing and cleaning """
 
