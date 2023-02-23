@@ -11,7 +11,7 @@ import csv
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
     
-    urldata = pd.read_csv('gs://pescatore_db/urldata.csv')
+    urldata = pd.read_csv(r'/tmp/urldata.csv')
     for i in range(1, len(urldata)):
       if domain_name in str(urldata['Domain'][i]):
         return urldata['Label'][i]  #if the domain does exist it returns the label
