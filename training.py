@@ -212,7 +212,9 @@ def train_model():
     """Saving the model as a pickle file"""
 
     import pickle
-    pickle.dump(classifier, open('phishing_model.pkl', 'wb'))
+    pickle.dump(classifier, open(r'/tmp/phishing_model.pkl', 'wb'))
+    blob = bucket.blob("phishing_model.pkl")
+    blob.upload_from_filename(r"/tmp/phishing_model.pkl")
 
     return {
         "status":"training complete",

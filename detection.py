@@ -27,13 +27,16 @@ def check(url):
     file = open(r"/tmp/urldata.csv","wb")
     blob.download_to_file(file)
 
+    modelblob = bucket.blob('phishing_model.pkl')
+    model_file = open(r"/tmp/phishing_model.pkl","wb")
+    modelblob.download_to_file(model_file)
     features = [] 
 
     #extracts the features of the url
     features.append(fe.featureExtraction(url))
 
     # loading the model to predict
-    loaded_model = pickle.load(open('phishing_model.pkl', 'rb'))
+    loaded_model = pickle.load(open(r'/tmp/phishing_model.pkl', 'rb'))
 
     #prediction result is stored in the 'result' variable. 1 for malicious and 0 for benign
     result = loaded_model.predict(features)
