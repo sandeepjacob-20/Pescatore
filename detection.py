@@ -31,7 +31,31 @@ def check(url):
     model_file = open(r"/tmp/phishing_model.pkl","wb")
     modelblob.download_to_file(model_file)
 
-    doesExist = databaseCheck(domain_name)
+    #extracts the details of the url
+    site_data = whois.whois(urlparse(url).netloc)
+
+    try:
+        domain_name = site_data.domain_name
+        if(type(domain_name) is list):
+            domain_name = domain_name[1].lower()
+        if domain_name.isupper():
+            domain_name = domain_name.lower()
+        #checks if the domain name already exists in the training dataset.
+        doesExist = databaseCheck(domain_name)
+    except:
+        domain_name = "none"
+        doesExist = 1
+
+    registrar = site_data.registrar
+
+    creation_date = site_data.creation_date
+    if (type(creation_date) is list):
+        creation_date = creation_date[0]
+
+    try:
+        country_name = pycountry.countries.get(alpha_2=site_data.country).name
+    except:
+        country_name = "unavailable"
 
     if doesExist==2:
         features = [] 
@@ -46,31 +70,6 @@ def check(url):
         result = loaded_model.predict(features)
     else:
         result = doesExist
-
-    #extracts the details of the url
-    site_data = whois.whois(urlparse(url).netloc)
-
-    try:
-        domain_name = site_data.domain_name
-        if(type(domain_name) is list ):
-            domain_name=domain_name[1].lower()
-        if domain_name.isupper():
-            domain_name=domain_name.lower()
-         #checks if the domain name already exists in the training dataset.
-    except:
-        domain_name="none"
-        doesExist=1
-
-    registrar = site_data.registrar
-
-    creation_date = site_data.creation_date
-    if (type(creation_date) is list):
-        creation_date=creation_date[0]
-
-    try:
-        country_name = pycountry.countries.get(alpha_2=site_data.country).name
-    except:
-        country_name = "unavailable"
 
     if result==0:
         if doesExist == 2:
