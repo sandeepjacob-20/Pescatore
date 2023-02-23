@@ -73,7 +73,7 @@ def check(url):
                 writer = csv.writer(f)
                 writer.writerow(features[0])
 
-            blob = bucket.blob(r"/tmp/urldata.csv")
+            blob = bucket.blob("urldata.csv")
             blob.upload_from_filename(r"/tmp/urldata.csv")
             # blob.upload_from_string(df.to_csv(), 'text/csv')
             # df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
