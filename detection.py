@@ -61,10 +61,10 @@ def check(url):
     if (type(creation_date) is list):
         creation_date=creation_date[0]
 
-    try:
-        country_name = pycountry.countries.get(alpha_2=site_data.country).name
-    except:
-        country_name = "unavailable"
+    # try:
+    country_name = pycountry.countries.get(alpha_2=site_data.country).name
+    # except:
+        # country_name = "unavailable"
 
     if result==0:
         if doesExist == 0:
