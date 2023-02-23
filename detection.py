@@ -11,7 +11,7 @@ import csv
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
     
-    urldata = pd.read_csv('gs://urldatabase/urldata.csv')
+    urldata = pd.read_csv('gs://pescatore_db/urldata.csv')
     for i in range(1, len(urldata)):
       if domain_name in str(urldata['Domain'][i]):
         return 1
@@ -20,9 +20,9 @@ def databaseCheck(domain_name):
 
 def check(url):
 
-    path_to_private_key = './thinking-league-377006-e318d34b7d2a.json'
+    path_to_private_key = 'gs://pescatore_db/pescatore-2023-e9423f7cd903.json'
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
-    bucket = client.bucket('urldatabase')
+    bucket = client.bucket('pescatore_db')
     blob = bucket.blob('urldata.csv')
     file = open(r"/tmp/urldata.csv","wb")
     blob.download_to_file(file)
@@ -78,9 +78,7 @@ def check(url):
 
             blob = bucket.blob("urldata.csv")
             blob.upload_from_filename(r"/tmp/urldata.csv")
-            # blob.upload_from_string(df.to_csv(), 'text/csv')
-            # df.to_csv('gs://urldatabase/urldata.csv', mode='a', index=False, header=False)
-
+            
         #returns the result to the api 
         return {"result":"safe",
         "registrar":str(registrar),
@@ -99,9 +97,7 @@ def check(url):
 
             blob = bucket.blob("urldata.csv")
             blob.upload_from_filename(r"/tmp/urldata.csv")
-            # blob.upload_from_string(df.to_csv(), 'text/csv')
-            # df.to_csv('gs://urldatabase/urldata.csv',mode='a', index=False, header=False)
-
+    
         #returns the result to the api 
         return {"result":"Unsafe",
         "registrar":str(registrar),
