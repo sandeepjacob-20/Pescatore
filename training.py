@@ -18,7 +18,7 @@ from google.cloud import storage
 
 def train_model():
     #Loading the data
-    path_to_private_key = 'gs://pescatore_db/pescatore-2023-e9423f7cd903.json'
+    path_to_private_key = './pescatore-2023-e9423f7cd903.json'
     client = storage.Client.from_service_account_json(json_credentials_path=path_to_private_key)
     bucket = client.bucket('pescatore_db')
     blob = bucket.blob('urldata.csv')
