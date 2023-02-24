@@ -1,5 +1,5 @@
 runtime: python39
 manual_scaling:
-  instances: 5
-instance_class: B4_1G
+  instances: 2
+instance_class: B4
 entrypoint: gunicorn -w 4 -k uvicorn.workers.UvicornWorker pescatore_api:app
