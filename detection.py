@@ -44,7 +44,7 @@ def check(url):
         doesExist = databaseCheck(domain_name)
     except:
         domain_name = "none"
-        doesExist = 1
+        doesExist = 2
 
     registrar = site_data.registrar
 
