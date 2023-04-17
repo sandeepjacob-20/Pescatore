@@ -73,7 +73,7 @@ def check(url):
         features[0].insert(11,result[0])
         # df = pd.DataFrame(features)
         #if domain name not in the dataset, adds it to the dataset
-        with open(r'/tmp/urldata.csv', 'a') as f:
+        with open(r'/tmp/urldata.csv', 'w+') as f:
             writer = csv.writer(f)
             writer.writerow(features[0])
 
