@@ -68,22 +68,21 @@ def check(url):
 
         #prediction result is stored in the 'result' variable. 1 for malicious and 0 for benign
         result = loaded_model.predict(features)
+
+        features[0].insert(0,domain_name)
+        features[0].insert(11,result[0])
+            # df = pd.DataFrame(features)
+            #if domain name not in the dataset, adds it to the dataset
+        with open(r'/tmp/urldata.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow(features[0])
+
+        blob = bucket.blob("urldata.csv")
+        blob.upload_from_filename(r"/tmp/urldata.csv")
     else:
         result = doesExist
 
     if result==0:
-        if doesExist == 2:
-            features[0].insert(0,domain_name)
-            features[0].insert(11,result[0])
-            # df = pd.DataFrame(features)
-            #if domain name not in the dataset, adds it to the dataset
-            with open(r'/tmp/urldata.csv', 'a') as f:
-                writer = csv.writer(f)
-                writer.writerow(features[0])
-
-            blob = bucket.blob("urldata.csv")
-            blob.upload_from_filename(r"/tmp/urldata.csv")
-            
         #returns the result to the api 
         return {"result":"safe",
         "registrar":str(registrar),
@@ -91,18 +90,6 @@ def check(url):
         "country":country_name} 
 
     elif result==1:
-        if doesExist == 2:  #if domain name not in the dataset, adds it to the dataset
-            features[0].insert(0, domain_name)
-            features[0].insert(11, result[0])
-            df = pd.DataFrame(features)
-            #if domain name not in the dataset, adds it to the dataset
-            with open(r'/tmp/urldata.csv', 'a') as f:
-                writer = csv.writer(f)
-                writer.writerow(features[0])
-
-            blob = bucket.blob("urldata.csv")
-            blob.upload_from_filename(r"/tmp/urldata.csv")
-    
         #returns the result to the api 
         return {"result":"Unsafe",
         "registrar":str(registrar),
