@@ -6,7 +6,13 @@ import pycountry
 import pandas as pd
 from google.cloud import storage
 import csv
+import re
 
+def getDomain(url):
+  domain = urlparse(url).netloc
+  if re.match(r"^www.", domain):
+      domain = domain.replace("www.", "")
+  return domain
 
 #To check if the domain name already exists in the training dataset
 def databaseCheck(domain_name):
@@ -41,7 +47,7 @@ def check(url):
         if domain_name.isupper():
             domain_name = domain_name.lower()
         #checks if the domain name already exists in the training dataset.
-        doesExist = databaseCheck(domain_name)
+        doesExist = databaseCheck(getDomain(url))
     except:
         domain_name = "none"
         doesExist = 2
@@ -69,16 +75,16 @@ def check(url):
         #prediction result is stored in the 'result' variable. 1 for malicious and 0 for benign
         result = loaded_model.predict(features)
 
-        features[0].insert(0,domain_name)
+        features[0].insert(0,getDomain(url))
         features[0].insert(11,result[0])
         # df = pd.DataFrame(features)
         #if domain name not in the dataset, adds it to the dataset
-        # file = pd.read_csv(r"/tmp/urldata.csv")
-        # file.loc[len(file)] = features[0]
-        # file.to_csv(r"/tmp/urldata.csv",index=False)
-        with open(r'/tmp/urldata.csv', 'a+ ', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(features[0])
+        file = pd.read_csv(r"/tmp/urldata.csv")
+        file.loc[len(file)] = features[0]
+        file.to_csv(r"/tmp/urldata.csv",index=False)
+        # with open(r'/tmp/urldata.csv', 'a+ ', newline='') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(features[0])
 
         blob = bucket.blob("urldata.csv")
         blob.upload_from_filename(r"/tmp/urldata.csv")
