@@ -75,7 +75,7 @@ def check(url):
         #if domain name not in the dataset, adds it to the dataset
         file = pd.read_csv(r"/tmp/urldata.csv")
         file = file.add(features[0])
-        file.to_csv(r"/tmp/urldata.csv")
+        file.to_csv(r"/tmp/urldata.csv",index=False)
         # with open(r'/tmp/urldata.csv', 'a+ ', newline='') as f:
         #     writer = csv.writer(f)
         #     writer.writerow(features[0])
