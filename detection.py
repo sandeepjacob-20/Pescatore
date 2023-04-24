@@ -73,9 +73,12 @@ def check(url):
         features[0].insert(11,result[0])
         # df = pd.DataFrame(features)
         #if domain name not in the dataset, adds it to the dataset
-        with open(r'/tmp/urldata.csv', 'a', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(features[0])
+        file = pd.read_csv(r"/tmp/urldata.csv")
+        file = file.add(features[0])
+        file.to_csv(r"/tmp/urldata.csv")
+        # with open(r'/tmp/urldata.csv', 'a+ ', newline='') as f:
+        #     writer = csv.writer(f)
+        #     writer.writerow(features[0])
 
         blob = bucket.blob("urldata.csv")
         blob.upload_from_filename(r"/tmp/urldata.csv")
